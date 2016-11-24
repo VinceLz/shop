@@ -20,6 +20,7 @@ import com.xawl.shop.service.AdminService;
 import com.xawl.shop.util.ResourceUtil;
 import com.xawl.shop.util.keyUtil;
 
+//测试
 @Controller
 public class AdminController extends BaseController {
 
