@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xawl.shop.PostMapper">
+	<delete id="delete" parameterType="string">
+		delete from db_post where pid in
+		<foreach collection="array" close=")" open="(" item="id"
+			separator=",">
+			#{id}
+		</foreach>
+	</delete>
+
+
+
+	<delete id="deleteById" parameterType="string">
+		delete from db_post where
+		pid=#{pid}
+	</delete>
+
+
+	<insert id="insert" parameterType="com.xawl.shop.domain.Post">
+		insert into db_post
+		(title,content,uid,uphone,uname,cid,cname,pdate)
+		values(
+		#{title},
+		#{content},
+		#{uid},
+		#{uphone},
+		#{uname},
+		#{cid},
+		#{cname},
+		#{pdate}
+		)
+	</insert>
+
+	<update id="updateStatus" parameterType="com.xawl.shop.domain.Post">
+		update db_post set
+		status=#{status}
+		where pid=#{pid}
+	</update>
+
+
+	<select id="findPage" parameterType="com.xawl.shop.pagination.Page"
+		resultType="com.xawl.shop.domain.Post">
+		select pid,title,content,uphone,uname,cname,status,pdate from db_post
+		where 1=1
+		<if test="params.uname!=null and params.uname!=''">and uname=#{params.uname}</if>
+		<if test="params.start!=null and params.start!=''">and pdate>=#{params.start}</if>
+		<if test="params.end!=null and params.end!=''">and #{params.end}>=pdate</if>
+		<if test="params.uphone!=null and params.uphone!=''">and uphone=#{params.uphone}</if>
+		order by pdate desc
+	</select>
+
+	<select id="findPage2" parameterType="com.xawl.shop.pagination.Page"
+		resultType="com.xawl.shop.domain.Post">
+		select pid,title,uphone,uname,cname,pdate from db_post where 1=1
+		<if test="params.title!=null and params.title!=''">and title like '%${params.title}%'</if>
+		<if test="params.cid!=null and params.cid!=''">and cid=#{params.cid}</if>
+		order by pdate desc
+	</select>
+
+
+
+	<update id="updateCname" parameterType="map">
+		update db_post set
+
+		cname=#{cname}
+
+		where cid=#{cid}
+	</update>
+
+	<select id="get" parameterType="string" resultType="com.xawl.shop.domain.Post">
+		select
+		pid,content,title,uphone,uname,cname,pdate,uid from
+		db_post where
+		pid=#{pid} limit 1
+	</select>
+	<select id="getAllPost" parameterType="string"
+		resultType="com.xawl.shop.domain.Post">
+		select pid,title,cname,pdate from db_post where uid=#{uid} 
+	</select>
+
+
+	<delete id="deletesByUid" parameterType="map">
+		delete from db_post where pid in
+		<foreach collection="pid" close=")" open="(" item="id"
+			separator=",">
+			#{id}
+		</foreach>
+		and uid=#{uid}
+	</delete>
+
+	
+</mapper>

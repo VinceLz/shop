@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.xawl.shop.CartitemMapper">
+
+	<select id="getById" parameterType="string"
+		resultType="com.xawl.shop.domain.CartItem">
+		select cartitem_id,gid,gname,gprice,bname from db_cartitem
+		where uid=#{uid} order by date limit 1
+	</select>
+
+	<insert id="insert" parameterType="com.xawl.shop.domain.CartItem">
+		insert into
+		db_cartitem(gid,uid,gname,gprice,bname,date) values(
+		#{gid},
+		#{uid},
+		#{gname},
+		#{gprice},
+		#{bname},
+		#{date}
+		)
+	</insert>
+	<delete id="delete" parameterType="string">
+		delete from db_cartitem where gid in
+		<foreach collection="array" close=")" open="(" item="gid"
+			separator=",">
+			#{gid}
+		</foreach>
+	</delete>
+
+
+	<delete id="deleteByCid" parameterType="map">
+		delete from db_cartitem where cartitem_id in
+		<foreach collection="cartitem_id" close=")" open="(" item="id"
+			separator=",">
+			#{id}
+		</foreach>
+		and uid=#{uid}
+	</delete>
+	<delete id="deleteByGid" parameterType="string">
+		delete from db_cartitem where gid=#{gid}
+	</delete>
+</mapper>

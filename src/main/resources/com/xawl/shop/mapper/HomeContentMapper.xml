@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.xawl.shop.HomeContentMapper">
+	<select id="findContent" resultType="com.xawl.shop.domain.Home.HomeContent">
+		select
+		cid,type,head_title_right,head_title_left,c1_image,c2_image,c3_image,c4_image,c1_title_top,c1_title_bottom,c2_title_top,c2_title_bottom,c3_title_top,c3_title_bottom,c4_title_top,c4_title_bottom
+		from db_home_content
+	</select>
+</mapper>

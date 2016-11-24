@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xawl.shop.CategoryMapper">
+
+	<resultMap type="com.xawl.shop.domain.VO.CategoryVO" id="categoryVORM">
+		<id column="cid" property="cid" />
+		<result column="cname" property="cname" />
+		<result column="pid" property="pid" />
+		<result column="desc" property="desc" />
+	</resultMap>
+
+
+
+	<update id="updateCname" parameterType="map">
+		update db_category set
+		cname=#{cname}
+		where cid=#{cid}
+	</update>
+
+
+	<insert id="insertByPid" parameterType="com.xawl.shop.domain.Category">
+		insert into db_category
+		(cid,cname,pid,`desc`)
+		values(
+		#{cid},
+		#{cname},
+		#{pid},
+		#{desc}
+		)
+	</insert>
+
+
+	<select id="findmenu" resultMap="categoryVORM">
+		select cid,cname,pid,`desc` from
+		db_category
+	</select>
+
+	<select id="getChile" resultType="com.xawl.shop.domain.Category"
+		parameterType="string">
+		select cid,
+		pid from db_category
+		where pid=#{cid}
+	</select>
+
+	<delete id="deleteById" parameterType="string">
+		delete from db_category
+		where cid=#{cid} 
+	</delete>
+</mapper>

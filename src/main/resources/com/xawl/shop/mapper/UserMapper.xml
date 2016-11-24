@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.xawl.shop.UserMapper">
+	<resultMap type="com.xawl.shop.domain.VO.UserVO" id="userVORM">
+		<id column="uid" property="uid" />
+		<result property="ulogin" column="ulogin" />
+		<result property="uphone" column="uphone" />
+		<result property="uaddress" column="uaddress" />
+		<result property="ulongitude" column="ulongitude" />
+		<result property="uname" column="uname" />
+		<result property="ucity" column="ucity" />
+		<result property="uprovince" column="uprovince" />
+		<result property="ulatitude" column="ulatitude" />
+		<result property="udate" column="udate" />
+		<result property="ulastlogin" column="ulastlogin" />
+		<result property="uemail" column="uemail" />
+		<result property="status" column="status" />
+		<result property="rname" column="rname" />
+		<result property="token" column="token" />
+		<result property="isonline" column="isonline" />
+		<result property="uimage" column="uimage" />
+		<result property="sex" column="sex" />
+		<association property="business" javaType="com.xawl.shop.domain.Business">
+			<id column="bid" property="bid" />
+			<result column="bname" property="bname" />
+			<result column="bscore" property="bscore" />
+			<result column="bimage" property="bimage" />
+			<result column="baddress" property="baddress" />
+			<result column="companyname" property="companyname" />
+			<result column="status" property="status" />
+			<result column="bdate" property="bdate" />
+			<result column="rid" property="rid" />
+			<result column="rname" property="rname" />
+		</association>
+	</resultMap>
+
+
+	<resultMap type="com.xawl.shop.domain.User" id="userRM">
+		<id column="uid" property="uid" />
+		<result property="ulogin" column="ulogin" />
+		<result property="uphone" column="uphone" />
+		<result property="uaddress" column="uaddress" />
+		<result property="ulongitude" column="ulongitude" />
+		<result property="uname" column="uname" />
+		<result property="uprovince" column="uprovince" />
+		<result property="ucity" column="ucity" />
+		<result property="ulatitude" column="ulatitude" />
+		<result property="udate" column="udate" />
+		<result property="ulastlogin" column="ulastlogin" />
+		<result property="uemail" column="uemail" />
+		<result property="status" column="status" />
+		<result property="rname" column="rname" />
+		<result property="rid" column="rid" />
+		<result property="token" column="token" />
+		<result property="isonline" column="isonline" />
+		<result property="uimage" column="uimage" />
+		<result property="sex" column="sex" />
+	</resultMap>
+
+
+	<select id="getUser" resultMap="userRM" parameterType="map">
+		select
+		uid,ulogin,uphone,sex,uaddress,ulongitude,uname,uprovince,ucity,bid,ulatitude,udate,rid,ulastlogin,uemail,status,rname,uimage,token,isonline
+		from
+		db_user
+		where (ulogin=#{ulogin} and upassword=#{upassword}) or
+		token=#{token} limit 1
+	</select>
+
+	<select id="getUserByUlogin" resultMap="userRM" parameterType="string">
+		select
+		uid,ulogin,uphone,sex,uaddress,ulongitude,uname,uprovince,ucity,ulatitude,udate,rid,ulastlogin,uemail,status,rname,uimage,token,isonline
+		from
+		db_user
+		where ulogin=#{ulogin} limit 1
+	</select>
+
+	<update id="updateLast" parameterType="map">
+		update db_user set
+		ulastlogin=#{ulastlogin}
+		where uid=#{uid}
+	</update>
+
+
+	<select id="findPage" parameterType="com.xawl.shop.pagination.Page"
+		resultMap="userRM">
+		select
+		uid,ulogin,uphone,uaddress,ulongitude,uname,uprovince,ucity,ulatitude,udate,ulastlogin,uemail,status,rname,uimage
+		from db_user where 1=1
+		<if test="params.ulogin!=null and params.ulogin!=''">and ulogin=#{params.ulogin}</if>
+		<if test="params.uname!=null and params.uname!=''">and uname=#{params.uname}</if>
+		<if test="params.rname!=null and params.rname!=''">and rname=#{params.rname}</if>
+		<if test="params.status!=null and params.status!=''">and status=#{params.status}</if>
+		<if test="params.start!=null and params.start!=''"> and udate >= #{params.start}</if>
+		<if test="params.end!=null and params.end!=''">and #{params.end} >= udate</if>
+		order by udate DESC
+	</select>
+
+
+	<select id="get" parameterType="string" resultMap="userRM">
+		select
+		uid,uphone,sex,uaddress,ulongitude,uname,uprovince,ucity,ulatitude,udate,rid,ulastlogin,uemail,status,rname,uimage
+		from
+		db_user where uid=#{uid} limit 1
+	</select>
+
+
+	<select id="getUserToBusiness" resultMap="userVORM"
+		parameterType="string">
+		select
+		user.uid,user,user.sex,user.uimage,user.uphone,user.uaddress,user.ulongitude,user.uname,user.uprovince,user.ucity,user.ulatitude,user.udate,user.rid,user.ulastlogin,user.uemail,user.status,user.rname,bu.bid,bu.bname,bu.bscore,bu.baddress,bu.companyname,bu.status,bu.bdate,bu.rid,bu.rname
+		from db_user
+		user,db_business bu where
+		user.bid=bu.bid and uid=#{id}
+	</select>
+
+
+
+
+
+	<select id="find" resultMap="userRM">
+		select * from db_user
+	</select>
+	<update id="updateStatus" parameterType="map">
+		update db_user set
+		status=#{status}
+		where uid=#{uid}
+	</update>
+
+
+	<delete id="deleteById" parameterType="string">
+		delete from db_user where
+		uid=#{uid}
+	</delete>
+
+	<delete id="delete" parameterType="string">
+		delete from db_user where uid in
+		<foreach collection="array" open="(" close=")" separator=","
+			item="id">
+			#{id}
+		</foreach>
+	</delete>
+
+	<update id="updateBid" parameterType="com.xawl.shop.domain.User">
+		update db_user set
+		bid=#{bid}
+		where uid=#{uid}
+	</update>
+
+	<insert id="updateImage" parameterType="map">
+		update db_user set
+		uimage=#{uimage} where uid=#{uid}
+	</insert>
+
+	<update id="updateEncode" parameterType="map">
+		update db_user set
+		encode=#{encode} where uid=#{uid}
+	</update>
+
+	<update id="updateonli" parameterType="map">
+		update db_user set
+		isonline=#{isonline} where uid=#{uid}
+	</update>
+
+	<update id="update" parameterType="com.xawl.shop.domain.User">
+		update db_user set
+		token=#{token},isonline=#{isonline},ulastlogin=#{ulastlogin} where
+		uid=#{uid}
+	</update>
+
+
+	<insert id="regist" parameterType="com.xawl.shop.domain.User">
+		insert into
+		db_user(ulogin,uphone,upassword,udate)
+		value(
+		#{ulogin},
+		#{uphone},
+		#{upassword},
+		#{udate}
+		)
+	</insert>
+
+	<update id="updateInfo" parameterType="com.xawl.shop.domain.User">
+		update db_user set
+		uphone=#{uphone},uaddress=#{uaddress},uname=#{uname},uprovince=#{uprovince},ucity=#{ucity},uemail=#{uemail},sex=#{sex}
+		where uid=#{uid}
+	</update>
+
+
+
+</mapper>

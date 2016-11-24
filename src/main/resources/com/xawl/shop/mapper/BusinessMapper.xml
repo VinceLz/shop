@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xawl.shop.BusinessMapper">
+	<resultMap type="com.xawl.shop.domain.Business" id="businessRM">
+		<id column="bid" property="bid" />
+		<result column="bname" property="bname" />
+		<result column="bscore" property="bscore" />
+		<result column="baddress" property="baddress" />
+		<result column="companyname" property="companyname" />
+		<result column="status" property="status" />
+		<result column="bdate" property="bdate" />
+		<result column="bimage" property="bimage" />
+		<result column="rid" property="rid" />
+		<result column="rname" property="rname" />
+		<result column="bphone" property="bphone" />
+	</resultMap>
+
+	<select id="findPage" parameterType="com.xawl.shop.pagination.Page"
+		resultMap="businessRM">
+		select
+		bid,bname,bscore,bimage,baddress,companyname,status,bdate,rname,bphone
+		from db_business where 1=1
+		<if test="params.status!=null and params.status!=''">and status=#{params.status}</if>
+		<if test="params.start!=null and params.start!=''">and bdate >= #{params.start}</if>
+		<if test="params.end!=null and params.end!=''">and #{params.end} >= bdate</if>
+		<if test="params.cool2ok!=null and params.cool2ok!=''">and status>=#{params.cool2ok}</if>
+		<if test="params.bname!=null and params.bname!=''">and bname=#{params.bname}</if>
+		<if test="params.companyname!=null and params.companyname!=''">and companyname=#{companyname}</if>
+		order by bdate DESC
+	</select>
+
+	<select id="get" parameterType="string" resultMap="businessRM">
+		select
+		bid,bname,bscore,baddress,companyname,status,bdate,rname,bphone from
+		db_business
+		where bid=#{bid} limit 1
+	</select>
+
+	<update id="updateStatus" parameterType="map">
+		update db_business set
+
+		status=#{status}
+
+		where bid=#{bid}
+	</update>
+
+	<insert id="insert" parameterType="com.xawl.shop.domain.Business">
+		insert into db_business
+		(bname,baddress,companyname,bdate,bphone,bid)
+		values(
+		#{bname},
+		#{baddress},
+		#{companyname},
+		#{bdate},
+		#{bphone},
+		#{bid}
+		)
+	</insert>
+
+	<select id="getBusinessByKey" parameterType="string" resultMap="businessRM">
+		select
+		bid,bname,bscore,baddress,companyname,status,bdate,rname,bphone
+		from
+		db_business
+		where bid=#{bid} limit 1
+	</select>
+
+	<select id="getPhoneByBid" parameterType="string" resultType="string">
+		select bphone from
+		db_business where bid=#{bid} limit 1
+	</select>
+
+	<select id="getUidByBid" parameterType="string" resultType="int">
+		SELECT uid FROM db_user WHERE bid=#{bid}
+	</select>
+
+	<update id="updateGimage" parameterType="map">
+		update db_business set
+		bimage=#{bimage} where bid=#{bid}
+	</update>
+
+	<select id="getcode" parameterType="string" resultType="int">
+		select
+		status from db_business where bid=#{bid} limit 1
+	</select>
+
+
+	<update id="updateInfo" parameterType="com.xawl.shop.domain.Business">
+		update db_business set
+		bname=#{bname},baddress=#{baddress},companyname=#{companyname},bphone=#{bphone}
+		where bid=#{bid}
+	</update>
+
+
+</mapper>

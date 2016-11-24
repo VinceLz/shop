@@ -1,0 +1,57 @@
+try load node stat file...
+working dir: C:\Users\Administrator\Desktop\ddpush-1.0.03\
+start connector...
+udp connector port:9966
+console listening port:9900
+udp connector recv buffer size:104857600
+udp connector send buffer size:104857600
+nio tcp connector port:9966
+NIO TCP Connector nio provider: sun.nio.ch.WindowsSelectorProvider
+NIO TCP Push Listener nio provider: sun.nio.ch.WindowsSelectorProvider
+push listener port:9999
+start 3 workers...
+server is up 
+try load node stat file...
+working dir: C:\Users\Administrator\Desktop\ddpush-1.0.03\
+start connector...
+udp connector port:9966
+console listening port:9900
+udp connector recv buffer size:104857600
+udp connector send buffer size:104857600
+nio tcp connector port:9966
+NIO TCP Push Listener nio provider: sun.nio.ch.WindowsSelectorProvider
+push listener port:9999
+NIO TCP Connector nio provider: sun.nio.ch.WindowsSelectorProvider
+start 3 workers...
+server is up 
+try load node stat file...
+working dir: C:\Users\Administrator\Desktop\ddpush-1.0.03\
+start connector...
+console listening port:9900
+udp connector port:9966
+udp connector recv buffer size:104857600
+udp connector send buffer size:104857600
+nio tcp connector port:9966
+NIO TCP Connector nio provider: sun.nio.ch.WindowsSelectorProvider
+NIO TCP Push Listener nio provider: sun.nio.ch.WindowsSelectorProvider
+push listener port:9999
+start 3 workers...
+server is up 
+cleaner quit
+saved 2 stat machines
+shut down server... 
+server is down, bye 
+try load node stat file...
+2 stat machine loaded 
+working dir: C:\Users\Administrator\Desktop\ddpush-1.0.03\
+start connector...
+console listening port:9900
+udp connector port:9966
+udp connector recv buffer size:104857600
+udp connector send buffer size:104857600
+nio tcp connector port:9966
+NIO TCP Connector nio provider: sun.nio.ch.WindowsSelectorProvider
+NIO TCP Push Listener nio provider: sun.nio.ch.WindowsSelectorProvider
+start 3 workers...
+push listener port:9999
+server is up 

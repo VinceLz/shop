@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xawl.shop.OrderMapper">
+	<resultMap type="com.xawl.shop.domain.VO.OrderVO" id="orderVO">
+		<id column="oid" property="oid" />
+		<result column="ordertime" property="ordertime" />
+		<result column="bid" property="bid" />
+		<result column="total" property="total" />
+		<result column="status" property="status" />
+		<result column="oinspect" property="oinspect" />
+		<result column="uname" property="uname" />
+		<result column="bname" property="bname" />
+		<result column="bphone" property="bphone" />
+		<result column="uphone" property="uphone" />
+		<result column="currentprice" property="currentprice" />
+		<collection property="itemlist" ofType="com.xawl.shop.domain.OrderItem">
+			<id column="orderitem_id" property="orderitem_id" />
+			<result column="gid" property="gid" />
+			<result column="gname" property="gname" />
+			<result column="gprice" property="gprice" />
+		</collection>
+
+	</resultMap>
+	<select id="findPage" resultType="com.xawl.shop.domain.Order"
+		parameterType="com.xawl.shop.pagination.Page">
+		select
+		oid,ordertime,total,status,uname,bname,oinspect,currentprice,bphone,uphone
+		from db_order where 1=1
+		<if test="params.start!=null and params.start!=''">and ordertime>=#{params.start}</if>
+		<if test="params.end!=null and params.end!=''">and #{params.end}>=ordertime</if>
+		<if test="params.bname!=null and params.bname!=''">and bname=#{params.bname}</if>
+		<if test="params.uname!=null and params.uname!=''">and uname=#{params.uname}</if>
+		order by ordertime DESC
+	</select>
+	<select id="getall" parameterType="string"
+		resultType="com.xawl.shop.domain.OrderItem">
+		select orderitem_id,gname,gimage,gprice,bphone,uphone from
+		db_orderitem
+		where
+		oid=#{oid}
+	</select>
+
+	<update id="examine" parameterType="map">
+		update db_order set
+		oinspect=#{oinspect}
+		where oid=#{oid}
+	</update>
+
+	<insert id="insertAll" parameterType="com.xawl.shop.domain.OrderItem">
+		insert into
+		db_order(oid,ordertime,total,uid,uname,bid,bname,currentprice,bphone,uphone)
+		values(
+		#{oid},
+		#{ordertime},
+		#{total},
+		#{uid},
+		#{uname},
+		#{bid},
+		#{bname},
+		#{currentprice},
+		#{bphone},
+		#{uphone}
+		)
+	</insert>
+
+
+	<select id="getOrderStatusNumber" parameterType="string"
+		resultType="map">
+		SELECT * FROM (SELECT COUNT(*) ORDER_NO_PLAY FROM db_order
+		WHERE
+		`status`=-1 AND uid=#{uid}) b,(SELECT COUNT(*) ORDER_YES_PLAY
+		FROM db_order
+		WHERE
+		`status`=0 AND uid=#{uid} ) c,(SELECT
+		COUNT(*)
+		ORDER_FAIL FROM db_order WHERE
+		`status`=1 AND uid=#{uid} )
+		e,(SELECT
+		COUNT(*) ORDER_DEAL FROM db_order WHERE `status`=2 AND
+		uid=#{uid}) f
+	</select>
+	<select id="getallByCode" parameterType="map" resultMap="orderVO">
+		select
+		o.oid,o.ordertime,o.uphone,o.uname,o.total,o.status,o.bname,o.bid,o.currentprice,o.bphone,i.orderitem_id,i.gid,i.gprice,i.gname
+		from db_order o,db_orderitem i where o.status=#{status} and
+		o.uid=#{uid} and o.oid=i.oid
+	</select>
+
+	<select id="getallByCode2Business" parameterType="string"
+		resultType="map">
+		SELECT * FROM (SELECT COUNT(*) ORDER_YES_PLAY FROM db_order
+		WHERE
+		`status`=0 AND bid=#{bid}) b,(SELECT COUNT(*) ORDER_FAIL
+		FROM
+		db_order
+		WHERE
+		`status`=1 AND bid=#{bid} ) c,(SELECT
+		COUNT(*) ORDER_DEAL
+		FROM db_order WHERE `status`=2 AND
+		bid=#{bid}) f
+	</select>
+
+	<update id="updateCode" parameterType="map">
+		update db_order set
+		status=#{status} where uid=#{uid} and oid=#{oid}
+	</update>
+
+	<update id="updateCodeBusiness" parameterType="map">
+		update db_order
+		set status=#{status} where bid=#{bid} and oid=#{oid}
+	</update>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.xawl.shop.SMSMapper">
+	<insert id="insert" parameterType="com.xawl.shop.domain.SMS">
+		insert into
+		db_sms(phone,sendTime,type,returnCode,encode) values(
+		#{phone},
+		#{sendTime},
+		#{type},
+		#{returnCode},
+		#{encode}
+		)
+	</insert>
+
+	<select id="getSMS" parameterType="string" resultType="com.xawl.shop.domain.SMS">
+		select
+		id,phone,sendTime,type,returnCode,encode from db_sms where
+		phone=#{phone}
+	</select>
+
+	<delete id="deleteById" parameterType="string">
+		delete from db_sms where
+		id=#{id}
+	</delete>
+</mapper>

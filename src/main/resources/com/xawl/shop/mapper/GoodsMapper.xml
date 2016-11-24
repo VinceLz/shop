@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xawl.shop.GoodsMapper">
+
+
+	<resultMap type="com.xawl.shop.domain.VO.GoodsVO" id="goodsVORM">
+		<id column="gid" property="gid" />
+		<result column="gname" property="gname" />
+		<result column="gprice" property="gprice" />
+		<result column="cid" property="cid" />
+		<result column="gscore" property="gscore" />
+		<result column="gcontent" property="gcontent" />
+		<result column="gimage" property="gimage" />
+		<result column="glocation" property="glocation" />
+		<result column="gphone" property="gphone" />
+		<result column="status" property="status" />
+		<result column="gkey" property="gkey" />
+		<result column="gname" property="gname" />
+		<result column="gdate" property="gdate" />
+		<result column="cname" property="cname" />
+		<result column="sale" property="sale" />
+		<result column="bid" property="bid" />
+		<result column="bname" property="bname" />
+		<collection property="mycomment" ofType="com.xawl.shop.domain.Comment">
+			<id column="comment_id" property="comment_id" />
+			<result column="content" property="content" />
+			<result column="date" property="date" />
+			<result column="uname" property="uname" />
+		</collection>
+	</resultMap>
+
+	<select id="findPage" resultType="com.xawl.shop.domain.Goods"
+		parameterType="com.xawl.shop.pagination.Page">
+		select
+		gid,gname,gprice,gscore,gcontent,gimage,glocation,gphone,bname,status,gdate,cname,sale
+		from db_goods where 1=1
+		<if test="params.gkey!=null and params.gkey!=''">and gkey=#{params.gkey}</if>
+		<if test="params.gname!=null and params.gname!=''">and gname like '%${params.gname}%'</if>
+		<if test="params.status!=null and params.status!=''">and status=#{params.status}</if>
+		<if test="params.cname!=null and params.cname!=''">and cname=#{params.cname}</if>
+		<if test="params.bname!=null and params.bname!=''">and bname=#{params.bname}</if>
+		<if test="params.start!=null and params.start!=''">and gdate>=#{params.start}</if>
+		<if test="params.end!=null and params.end!=''">and #{params.end} >=gdate</if>
+		order by gdate DESC
+	</select>
+
+
+	<select id="findPage2" resultType="com.xawl.shop.domain.Goods"
+		parameterType="com.xawl.shop.pagination.Page">
+		select gid,gname,gprice,gphone,gdate,cname,bname,sale from db_goods
+		where
+		1=1
+		<if test="params.gname!=null and params.gname!=''">and gname like '%${params.gname}%'</if>
+		<if test="params.cid!=null and params.cid!=''">and cid=#{params.cid}</if>
+		order by gdate DESC
+	</select>
+
+
+
+	<update id="updateStatus" parameterType="map">
+		update db_goods set
+		status=#{status}
+		where gid=#{gid}
+	</update>
+
+	<insert id="insert" parameterType="com.xawl.shop.domain.Goods">
+		insert into db_goods
+		(gname,gprice,cid,bid,gscore,gcontent,glocation,gphone,bname,gkey,gdate,cname)
+		values(
+		#{gname},
+		#{gprice},
+		#{cid},
+		#{bid},
+		#{gscore},
+		#{gcontent},
+		#{glocation},
+		#{gphone},
+		#{bname},
+		#{gkey},
+		#{gdate},
+		#{cname}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="string">
+		delete from db_goods where
+		gid=#{gid}
+	</delete>
+
+	<update id="update" parameterType="com.xawl.shop.domain.Goods">
+		update db_goods set
+		<set>
+			<if test="gname!=null and gname!=''">#{gname}</if>
+			<if test="gprice!=null and gprice!=''">#{gprice}</if>
+			<if test="cid!=null and cid!=''">#{cid}</if>
+			<if test="gcontent!=null and gcontent!=''">#{gcontent}</if>
+			<if test="gimage!=null and gimage!=''">#{gimage}</if>
+			<if test="glocation!=null and glocation!=''">#{glocation}</if>
+			<if test="gphone!=null and gphone!=''">#{gphone}</if>
+			<if test="cname!=null and cname!=''">#{cname}</if>
+			<if test="gdate!=null and gdate!=''">#{gdate}</if>
+		</set>
+	</update>
+
+	<update id="updateCname" parameterType="map">
+		update db_goods set
+		cname=#{cname}
+		where cid=#{cid}
+	</update>
+
+
+	<select id="get2comment" parameterType="string" resultMap="goodsVORM">
+		SELECT
+		g.gid,g.gname,g.gprice,g.gscore,g.gcontent,g.gimage,g.glocation,g.gphone,g.bname,g.status,g.gdate,g.cname
+		c.comment_id,c.content,c.date,c.uname FROM db_goods
+		g,db_comment c
+		WHERE c.`gid`=g.`gid` WHERE
+		g.`gid`=#{gid}
+	</select>
+	<insert id="upload" parameterType="map">
+		update db_goods set
+		gimage=#{gimage}
+		where gkey=#{gkey}
+	</insert>
+
+	<select id="get" parameterType="string" resultType="com.xawl.shop.domain.Goods">
+		select
+		gid,gname,gprice,gscore,gcontent,gimage,glocation,gphone,bname,status,gdate,cname,sale,bid
+		from
+		db_goods where gid=#{gid} limit 1
+	</select>
+
+
+	<update id="saleAdd" parameterType="string">
+		UPDATE db_goods SET
+		sale=sale+1 WHERE gid=#{gid}
+	</update>
+
+	<select id="getByBid" parameterType="string" resultType="com.xawl.shop.domain.Goods">
+		select
+		gid,gname,gprice,cname,gphone,status,gdate from db_goods where
+		bid=#{bid}
+	</select>
+	<delete id="delete" parameterType="string">
+		delete from db_goods where gid in
+		<foreach collection="array" close=")" open="(" item="id"
+			separator=",">
+			#{id}
+		</foreach>
+	</delete>
+
+	<select id="getUidByGid" parameterType="string" resultType="string">
+		select u.uid from db_goods g,db_user u where u.bid=g.bid and
+		g.gid=#{gid} limit 1
+	</select>
+</mapper>

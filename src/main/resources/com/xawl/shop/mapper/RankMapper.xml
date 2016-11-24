@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.xawl.shop.RankMapper">
+	<resultMap type="com.xawl.shop.domain.Rank" id="rankRM">
+		<id column="rid" property="rid" />
+		<result column="minscore" property="minscore" />
+		<result column="rname" property="rname" />
+		<result column="maxscore" property="maxscore" />
+		<result column="rcode" property="rcode" />
+	</resultMap>
+
+	<select id="get" parameterType="string" resultMap="rankRM">
+		select * from
+		db_rank wher rid=#{rid} limit 1
+	</select>
+
+	<select id="findPage" parameterType="com.xawl.shop.pagination.Page"
+		resultMap="rankRM">
+		select * from db_rank
+	</select>
+
+	<update id="updateRname" parameterType="map">
+		update db_rank set
+		rname=#{rname}
+		where rid=#{rid}
+	</update>
+
+
+
+</mapper>

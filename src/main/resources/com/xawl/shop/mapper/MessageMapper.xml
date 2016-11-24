@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.xawl.shop.domain.MessageMapper">
+
+
+	<select id="getById" parameterType="string"
+		resultType="com.xawl.shop.domain.Message">
+		SELECT
+		m.`mid`,m.send_name,m.`status`,t.pdate,m.type
+		FROM
+		db_message
+		m,db_message_text t WHERE (m.`uid`=#{uid} OR m.`uid`=0)
+		AND
+		m.`message_id`=t.`message_id` order by t.pdate desc
+	</select>
+
+	<insert id="addUserMessage" parameterType="com.xawl.shop.domain.Message">
+		insert into db_message
+		(send_name,uid,message_id,status,gid,gname,pname,type) values(
+		#{send_name},
+		#{uid},
+		#{message_id},
+		#{status},
+		#{gid},
+		#{gname},
+		#{pname},
+		#{type}
+		)
+	</insert>
+
+	<insert id="addmore" parameterType="com.xawl.shop.domain.Message">
+		insert into db_message_text
+		values(
+		#{message_id},
+		#{message},
+		#{pdate}
+		)
+	</insert>
+	<select id="getByMid" parameterType="string"
+		resultType="com.xawl.shop.domain.Message">
+		SELECT
+		m.mid,m.send_name,m.gname,m.gid,m.pname,m.type,t.message,t.pdate FROM
+		db_message m,db_message_text t WHERE `mid`=#{mid} AND
+		m.message_id=t.message_id limit 1
+	</select>
+	<update id="updateRead" parameterType="int">
+		update db_message set
+		status=1 where mid=#{mid}
+	</update>
+</mapper>
