@@ -2,8 +2,6 @@ package com.xawl.shop.util;
 
 import java.util.Random;
 
-import org.junit.Test;
-
 import SmsService.AbsRestClient;
 import SmsService.JsonReqClient;
 import SmsService.XmlReqClient;
@@ -42,6 +40,18 @@ public class SMSUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void main(String[] args) {
+		String accountSid = "47e9e47509665976c8a94cc4b574f46a";
+        String token = "c8b991db1ec194bd76306ca012216222";
+        String appId = "9aaa474190aa453f89c7c1ea9b74a00b";
+        String templateId = "35254";
+        String para = SMSUtil.getRandNum(6);
+        String mobile="18292882168";
+        SMSUtil.testTemplateSMS(true, accountSid, token, appId, templateId,
+                mobile, para);
+
 	}
 
 }

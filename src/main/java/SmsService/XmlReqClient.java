@@ -14,6 +14,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+
 public class XmlReqClient extends AbsRestClient {
 	private static Logger logger=Logger.getLogger(XmlReqClient.class);
 	@Override

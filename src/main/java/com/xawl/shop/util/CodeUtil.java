@@ -16,11 +16,9 @@ import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 /**
- * @ClassName: CaptchaUtil
- * @Description: 关于验证码的工具类
- * @author 无名
- * @date 2016-5-7 上午8:33:08
- * @version 1.0
+ * 
+ * @author kernel
+ * 
  */
 public final class CodeUtil {
 	private CodeUtil() {
@@ -69,7 +67,7 @@ public final class CodeUtil {
 
 		response.setContentType("image/jpeg");
 		String randomString = getRandomString();
-		System.out.println(randomString + "----");
+		System.out.println(randomString + "-----验证码");
 		request.getSession().setAttribute("imgcode", randomString);
 
 		int width = 80;

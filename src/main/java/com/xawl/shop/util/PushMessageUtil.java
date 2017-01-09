@@ -4,9 +4,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import org.ddpush.im.v1.client.appserver.Pusher;
-import org.ddpush.im.v1.node.IMServer;
-
 public class PushMessageUtil {
 
 	public static void start() {

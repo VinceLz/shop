@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-module
   type="WEB"
-  name="jk Maven Webapp"
+  name="shop Maven Webapp"
   id="myeclipse.1469359761704"
   context-root="/shop"
   j2ee-spec="1.7"
-  archive="shop.war">
+  archive="shop Maven Webapp.war">
   <attributes>
     <attribute name="webrootdir" value="src/main/webapp" />
   </attributes>
